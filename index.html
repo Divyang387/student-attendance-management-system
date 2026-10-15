@@ -1,0 +1,49 @@
+$ProjectPath = "C:\imp\Desktop\StudentAttendanceManagementSystem"
+$SourceIndex = "C:\imp\Desktop\HTML\index.html"
+$GitName = "Your Name"
+$GitEmail = "you@example.com"
+$RepoName = "student-attendance-management-system"
+
+New-Item -ItemType Directory -Path $ProjectPath -Force | Out-Null
+Copy-Item $SourceIndex "$ProjectPath\index.html" -Force
+
+@'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Admin</title>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <p>Manage students and attendance records.</p>
+</body>
+</html>
+'@ | Set-Content "$ProjectPath\admin.html" -Encoding UTF8
+
+@'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance</title>
+</head>
+<body>
+  <h1>Student Attendance</h1>
+  <p>View your attendance records.</p>
+</body>
+</html>
+'@ | Set-Content "$ProjectPath\user.html" -Encoding UTF8
+
+Set-Location $ProjectPath
+git init -b main
+git config user.name $GitName
+git config user.email $GitEmail
+git add index.html admin.html user.html
+git commit -m "Initial commit: Student Attendance Management System"
+
+gh repo create $RepoName --source $ProjectPath --remote origin --private --push
+
+git log --oneline --decorate
