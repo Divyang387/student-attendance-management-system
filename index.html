@@ -1,115 +1,49 @@
+$ProjectPath = "C:\imp\Desktop\StudentAttendanceManagementSystem"
+$SourceIndex = "C:\imp\Desktop\HTML\index.html"
+$GitName = "Your Name"
+$GitEmail = "you@example.com"
+$RepoName = "student-attendance-management-system"
+
+New-Item -ItemType Directory -Path $ProjectPath -Force | Out-Null
+Copy-Item $SourceIndex "$ProjectPath\index.html" -Force
+
+@'
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Student Attandance managment System</title>
-    </head>
-    <body>
-        <header>
-            <h1> Subjects </h1>
-        </header>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Admin</title>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <p>Manage students and attendance records.</p>
+</body>
 </html>
-Add your HTML code to these files before committing if you have already developed the application.
+'@ | Set-Content "$ProjectPath\admin.html" -Encoding UTF8
 
-Step 2: Initialize the Git repository
-bash
-git init
-This initializes a local Git repository in the project directory.
+@'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Attendance</title>
+</head>
+<body>
+  <h1>Student Attendance</h1>
+  <p>View your attendance records.</p>
+</body>
+</html>
+'@ | Set-Content "$ProjectPath\user.html" -Encoding UTF8
 
-Step 3: Configure Git user details
-Configure your name and email address for commit identification.
-
-bash
-git config --global user.name "Your Name"
-git config --global user.email "your-email@example.com"
-Verify the configuration:
-
-bash
-git config --global --list
-Replace the example name and email with your actual GitHub-associated details.
-
-Step 4: Add and commit the project files
-Add all project files to the staging area:
-
-bash
+Set-Location $ProjectPath
+git init -b main
+git config user.name $GitName
+git config user.email $GitEmail
 git add index.html admin.html user.html
-Check the staged files:
-
-bash
-git status
-Create the initial commit:
-
-bash
 git commit -m "Initial commit: Student Attendance Management System"
-Step 5: Create a remote repository on GitHub
-Open 
-GitHub .
 
-Sign in to your account.
+gh repo create $RepoName --source $ProjectPath --remote origin --private --push
 
-Click New repository.
-
-Enter the repository name: Student-Attendance-Management-System.
-
-Select Public or Private.
-
-Leave Add a README file, .gitignore, and license unchecked if you want to push your existing local repository without unrelated initial commits.
-
-Click Create repository.
-
-Copy the HTTPS repository URL. It will look similar to:
-
-text
-https://github.com/YOUR-USERNAME/Student-Attendance-Management-System.git
-Step 6: Connect the local repository to GitHub
-Rename the current branch to main and add the remote:
-
-bash
-git branch -M main
-
-git remote add origin https://github.com/YOUR-USERNAME/Student-Attendance-Management-System.git
-Verify the remote configuration:
-
-bash
-git remote -v
-Expected output format:
-
-text
-origin  https://github.com/YOUR-USERNAME/Student-Attendance-Management-System.git (fetch)
-origin  https://github.com/YOUR-USERNAME/Student-Attendance-Management-System.git (push)
-Replace YOUR-USERNAME with your actual GitHub username.
-
-Step 7: Push the project to GitHub
-bash
-git push -u origin main
-Authenticate with GitHub if prompted. Depending on your setup, authentication may use a browser sign-in, Git Credential Manager, or a personal access token.
-
-After a successful push, your three HTML files will be available in the GitHub repository.
-
-Step 8: Display the commit history
-Run:
-
-bash
-git log --oneline
-Example output:
-
-text
-a1b2c3d Initial commit: Student Attendance Management System
-The hash above is illustrative; your actual commit hash will differ.
-
-For detailed commit information, use:
-
-bash
-git log
-To verify the pushed branch and working-tree status:
-
-bash
-git status
-git branch -vv
-Expected status after a successful push:
-
-text
-On branch main
-Your branch is up to date with 'origin/main'.
-
-nothing to commit, working tree clean
+git log --oneline --decorate
