@@ -1,49 +1,111 @@
-$ProjectPath = "C:\imp\Desktop\StudentAttendanceManagementSystem"
-$SourceIndex = "C:\imp\Desktop\HTML\index.html"
-$GitName = "Your Name"
-$GitEmail = "you@example.com"
-$RepoName = "student-attendance-management-system"
-
-New-Item -ItemType Directory -Path $ProjectPath -Force | Out-Null
-Copy-Item $SourceIndex "$ProjectPath\index.html" -Force
-
-@'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attendance Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7ff;
+      color: #222;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #1d3c9b;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .box {
+      background: #fff;
+      padding: 18px;
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+    }
+    .box h3 { margin: 0 0 8px; color: #555; }
+    .box p { margin: 0; font-size: 26px; font-weight: 700; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+    }
+    th, td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid #eee;
+    }
+    th { background: #eef4ff; }
+    .status {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e8fff1;
+      color: #1a7f45;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
-  <p>Manage students and attendance records.</p>
+  <div class="container">
+    <h2>Admin Dashboard</h2>
+    <div class="stats">
+      <div class="box">
+        <h3>Total Students</h3>
+        <p>180</p>
+      </div>
+      <div class="box">
+        <h3>Present Today</h3>
+        <p>142</p>
+      </div>
+      <div class="box">
+        <h3>Absent</h3>
+        <p>38</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Course</th>
+          <th>Attendance</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rahul Sharma</td>
+          <td>B.Tech CSE</td>
+          <td>92%</td>
+          <td><span class="status">Good</span></td>
+        </tr>
+        <tr>
+          <td>Neha Verma</td>
+          <td>B.Tech IT</td>
+          <td>85%</td>
+          <td><span class="status">Good</span></td>
+        </tr>
+        <tr>
+          <td>Amit Kumar</td>
+          <td>BCA</td>
+          <td>68%</td>
+          <td><span class="status">Alert</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
-'@ | Set-Content "$ProjectPath\admin.html" -Encoding UTF8
-
-@'
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Attendance</title>
-</head>
-<body>
-  <h1>Student Attendance</h1>
-  <p>View your attendance records.</p>
-</body>
-</html>
-'@ | Set-Content "$ProjectPath\user.html" -Encoding UTF8
-
-Set-Location $ProjectPath
-git init -b main
-git config user.name $GitName
-git config user.email $GitEmail
-git add index.html admin.html user.html
-git commit -m "Initial commit: Student Attendance Management System"
-
-gh repo create $RepoName --source $ProjectPath --remote origin --private --push
-
-git log --oneline --decorate
